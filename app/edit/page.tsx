@@ -20,6 +20,16 @@ export default function Edit(): React.ReactElement {
 
             return;
         }
+
+        if (!domain.endsWith(".etran.dev")) {
+            errorRef.current!.innerText = "Please make sure your domain ends in .etran.dev";
+
+            setTimeout(() => {
+                errorRef.current!.innerText = "";
+            }, 5000);
+
+            return;
+        }
         window.location.href = `/edit/${domain}`;
     }
 
@@ -28,6 +38,7 @@ export default function Edit(): React.ReactElement {
         <div className={styles.mainContent}>
             <p>Input your given domain</p>
             <input type="text" value={domain} ref={domainRef} onChange={(e) => setDomain(e.target.value)}/>
+            <h6>NOTE: Your given domain ends in .etran.dev</h6>
         </div>
         <h1 className={styles.error} ref={errorRef} />
         <span className={styles.bottomSelector}>

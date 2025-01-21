@@ -13,24 +13,45 @@ export default function Setup(): React.ReactElement {
     const errorRef = React.useRef<HTMLHeadingElement>(null);
 
     const clearInputs = (): void => {
-        document.getElementsByClassName(styles.githubInput)[0].innerHTML = "";
-        document.getElementsByClassName(styles.domainInput)[0].innerHTML = "";
-        document.getElementsByClassName(styles.dockerInput)[0].innerHTML = "";
+        githubInputRef.current!.value = "";
+        domainInputRef.current!.value = "";
+        dockerImageRef.current!.value = "";
+        dockerfileRef.current!.checked = false;
+
+        setExistingDocker(false);
     }
 
-    const goToNext = (): void => {
+    const goToNext = async (): Promise<void> => {
         if (!existingDocker) {
             errorRef.current!.innerHTML = "Please make sure to have a Dockerfile within the requested GitHub repository.";
             setTimeout(() => {
                 errorRef.current!.innerHTML = "";
-            }, 10000);
+            }, 5000);
+            return;
         }
 
         if (githubInputRef.current!.value === "" || domainInputRef.current!.value === "") {
             errorRef.current!.innerHTML = "Please make sure to fill out all the fields.";
             setTimeout(() => {
                 errorRef.current!.innerHTML = "";
-            }, 10000);
+            }, 5000);
+            return;
+        }
+
+        if (domainInputRef.current!.value.length > 20) {
+            errorRef.current!.innerHTML = "Please make sure the domain is less than 20 characters in length.";
+            setTimeout(() => {
+                errorRef.current!.innerHTML = "";
+            }, 5000);
+            return;
+        }
+
+        if (!githubInputRef.current!.value.includes("github.com")) {
+            errorRef.current!.innerHTML = "Please make sure the GitHub repository is a valid URL.";
+            setTimeout(() => {
+                errorRef.current!.innerHTML = "";
+            }, 5000);
+            return;
         }
 
         window.location.href = "/setup/confirmation";
@@ -40,7 +61,7 @@ export default function Setup(): React.ReactElement {
         <h1 className={styles.mainTitle}>Setup a website</h1>
         <div className={styles.mainContent}>
             <span className={styles.selectDiv1}>
-                <h1>Enter GitHub repository</h1>
+                <h1>Enter GitHub repository URL</h1>
                 <input className={styles.githubInput} type="text" placeholder="GitHub website" ref={githubInputRef}/>
             </span>
             <span className={styles.selectDiv2}>
@@ -66,7 +87,7 @@ export default function Setup(): React.ReactElement {
         <span className={styles.bottomSelector}>
             <button className={styles.submitButton} onClick={(): string => window.location.href = "/"}>Back</button>
             <button className={styles.submitButton} onClick={(): void => clearInputs()}>Clear</button>
-            <button className={styles.submitButton} onClick={(): void => goToNext()}>Next</button>
+            <button className={styles.submitButton} onClick={(): Promise<void> => goToNext().then()}>Next</button>
         </span>
     </PageTemplate>
 }
