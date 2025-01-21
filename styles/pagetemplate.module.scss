@@ -1,0 +1,38 @@
+.page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-size: 100%;
+    background: url("../public/random_background.jpg") center;
+    width: 100vw;
+    height: 100vh;
+    z-index: 100;
+
+    .mainTitle {
+        font-family: "Montserrat", sans-serif;
+        font-size: 3rem;
+        text-align: center;
+        font-weight: 300;
+    }
+
+    .mainContent {
+        font-family: "Montserrat", sans-serif;
+        font-size: 1.5rem;
+        text-align: center;
+        font-weight: 300;
+        width: 50%;
+        height: 70%;
+        background-color: white;
+        border-radius: 30px;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        
+    }
+}
